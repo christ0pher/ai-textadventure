@@ -14,9 +14,15 @@ The whole magic lies in the initial prompting. We are setting a context that def
 2. Install the dependencies
 3. Run the app with streamlit. `streamlit run adventure.py`
 
+## **How to run ([nix](https://nixos.org/download.html#download-nix))**
+1. `nix --experimental-features 'nix-command flakes' run github:christ0pher/ai-textadventure`
+
+> **Note:** `--experimental-features 'nix-command flakes'` is only required if these
+features aren't [already enabled](https://nixos.wiki/wiki/Flakes#Permanent) in your `nix.conf`.
+
 ## **The idea**
 The idea came during a birthday party and we started with playing around with chatGPT and elevenlabs to get the story read to you.
-Biggest shoutout to: 
+Biggest shoutout to:
 - [KieCodes](https://github.com/kiecodes) for the initial idea
 - [Ebastuart](https://github.com/ebastuart) for the initial idea
-- [Chris](https://github.com/christ0pher) for the code idea and the initial code
+- [Chris](https://github.com/christ0pher) for the code idea and the initial code.
