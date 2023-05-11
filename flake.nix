@@ -37,13 +37,10 @@
         # Streamlit executable
         runner = pkgs.writeShellApplication {
           name = "ai-textadventure-runner";
-
-          runtimeInputs = [
-            ai-textadventure
-          ];
-
+          runtimeInputs = [pkgs.streamlit];
           text = ''
-            ${pkgs.streamlit}/bin/streamlit run ./adventure.py
+            export PYTHONPATH=${pkgs.python3.pkgs.makePythonPath [ai-textadventure]}
+            streamlit run ${./adventure.py}
           '';
         };
 
@@ -54,7 +51,7 @@
         ai-textadventure = {
           description = "This is a very simple AI adventure builder and runner";
           type = "app";
-          program = "${self.packages.${system}.runner}/bin/ai-textadventure-runner";
+          program = "${pkgs.lib.getExe self.packages.${system}.runner}";
         };
 
         default = ai-textadventure;
