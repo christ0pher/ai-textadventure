@@ -1,7 +1,9 @@
 
 import streamlit as st
+import re
+import json
 
-from LLM.openAI import init_open_ai_config, continue_story
+from LLM.openAI import init_open_ai_config, continue_story, extract_story_interaction_json
 from game.constants import GamestatusEnum
 from game.game_state import change_game_state_to
 
@@ -36,7 +38,6 @@ def continue_story_with_prompt(prompt: str):
         st.session_state.story + [{"role": "user", "content": prompt}]
     )
 
-
 def main():
     st.set_page_config(page_title="The AI Textadventure", page_icon="🤖")
     st.title("Text Adventure Game")
@@ -52,7 +53,7 @@ def main():
 
     if st.session_state.game_status == GamestatusEnum.PREPARE_STORY:
         st.write("Willkommen zu unserem Text Adventure Game. Um das Spiel zu starten, wähle einen Geschichten start aus und klicke auf Start.")
-        story_start = st.text_input("Geschichten Start")
+        story_start = st.text_input(label="Geschichten Start", value="Ein kleiner Igel möchte zum Mond fliegen.")
         language = st.text_input("Sprache")
         if st.button("Start"):
             st.session_state.game_started = True
@@ -69,8 +70,10 @@ def main():
             display_story()
             st.divider()
             with st.form("Was passiert als nächstes und welche Entscheidungen stehen dem Protagonisten zur Verfügung?"):
-                st.write(st.session_state.story[-1]["content"])
-                radio_selection = st.radio("Optionen", ["A", "B", "C"], horizontal=True)
+                story_interaction = extract_story_interaction_json(st.session_state.story)
+                st.write(story_interaction["story_part"])
+                options = [story_interaction["option_a"], story_interaction["option_b"], story_interaction["option_c"]]
+                radio_selection = st.radio("Optionen", options, horizontal=False)
                 submitted = st.form_submit_button("Weiter")
                 if submitted:
                     continue_story_with_prompt(radio_selection)

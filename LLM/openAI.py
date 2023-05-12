@@ -2,6 +2,8 @@ from typing import List
 from LLM.prompt import get_adventure_rules
 import streamlit as st
 import openai
+import re
+import json
 
 
 def init_open_ai_config(api_key: str, open_ai_version: str):
@@ -28,3 +30,16 @@ def continue_story(story: List[dict]):
     continued_story = story + [dict(adventure_prompt.choices[0].message)]
     print(f"Continued: {continued_story}")
     return continued_story
+
+def extract_story_interaction_json(story: list) -> dict:
+    last_response = story[-1]
+    assert last_response["role"] == "assistant"
+    
+    # Extract story response as json 
+    pattern = r"```json(.*?)```"
+    match = re.search(pattern, last_response["content"], re.DOTALL)
+    assert match
+
+    extracted_json = json.loads(match.group(1).strip())
+    print(f'extracted_json: {extracted_json}')
+    return extracted_json
