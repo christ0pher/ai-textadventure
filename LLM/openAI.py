@@ -31,13 +31,17 @@ def continue_story(story: List[dict]):
     print(f"Continued: {continued_story}")
     return continued_story
 
+
 def extract_story_interaction_json(story: list) -> dict:
     last_response = story[-1]
     assert last_response["role"] == "assistant"
-    
+    extract_json(last_response["content"])
+
+
+def extract_json(response_content: str) -> dict:
     # Extract story response as json 
     pattern = r"```json(.*?)```"
-    match = re.search(pattern, last_response["content"], re.DOTALL)
+    match = re.search(pattern, response_content, re.DOTALL)
     assert match
 
     extracted_json = json.loads(match.group(1).strip())
