@@ -24,7 +24,7 @@ def continue_story(story: List[dict]):
         messages=prompt,
     )
 
-    print(f"returned: {adventure_prompt}")
+    print(f"Response: {adventure_prompt}")
     continued_story = story + [dict(adventure_prompt.choices[0].message)]
-    print(f"returned: {continued_story}")
+    print(f"Continued: {continued_story}")
     return continued_story
