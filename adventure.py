@@ -12,12 +12,14 @@ def init_session():
 
 
 def reset():
+    print("reset")
     clear_state()
     change_game_state_to(GamestatusEnum.PREPARE_STORY)
     st.experimental_rerun()
 
 
 def clear_state():
+    print("clear state")
     st.session_state.story = []
     st.session_state.current_interaction = 0
     st.session_state.game_status = GamestatusEnum.INIT
@@ -28,6 +30,11 @@ def clear_state():
 def display_story():
     for story_part in st.session_state.story[:-1]:
         st.write(story_part["content"])
+
+def continue_story_with_prompt(prompt: str):
+    st.session_state.story = continue_story(
+        st.session_state.story + [{"role": "user", "content": prompt}]
+    )
 
 
 def main():
@@ -50,12 +57,11 @@ def main():
         if st.button("Start"):
             st.session_state.game_started = True
             st.session_state.story_start = story_start
-            st.session_state.story = [{"role": "user", "content": story_start}]
             if language:
                 st.session_state.language = language
             else:
                 st.session_state.language = "de"
-            st.session_state.story = continue_story(st.session_state.story)
+            continue_story_with_prompt(story_start)
             change_game_state_to(GamestatusEnum.STARTED)
 
     if st.session_state.game_status == GamestatusEnum.STARTED:
@@ -67,10 +73,7 @@ def main():
                 radio_selection = st.radio("Optionen", ["A", "B", "C"], horizontal=True)
                 submitted = st.form_submit_button("Weiter")
                 if submitted:
-                    st.session_state.story.append(
-                        {"role": "user", "content": radio_selection}
-                    )
-                    st.session_state.story = continue_story(st.session_state.story)
+                    continue_story_with_prompt(radio_selection)
                     st.session_state.current_interaction += 1
                     st.experimental_rerun()
         else:
