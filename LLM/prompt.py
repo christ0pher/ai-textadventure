@@ -9,7 +9,7 @@ def get_adventure_rules(language: str = "de") -> List[dict]:
             Der Spieler will eine spannende Geschichte spielen. Ein Spiel dauert 10 Interaktionen. 
             In jeder Interaktion hat der Spieler 3 Optionen (A,B,C) aus denen der Spieler wählen muss wie die Geschichte weitergeht. 
             Du beschreibst die Optionen mit drei unterschiedlichen Emojis und Text mit bis zu 128 Zeichen per Option.
-            Wichtig: Formatiere deine Antworten ausschließlich als JSON Objekt dieser Form:
+            Wichtig: Formatiere deine Antworten ausschließlich als JSON Objekt dieser Form in einem Markdown fenced Codeblock:
             ```json
             {"story_part": "Beschreibungstext der Interaktionen", "option_a": "🤖 Ich gehe nach links", "option_b": "🤖 Ich gehe nach rechts", "option_c": "🤖 Ich gehe geradeaus"}
             ```
