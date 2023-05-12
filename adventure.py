@@ -36,7 +36,7 @@ def main():
     if st.session_state.game_status == GamestatusEnum.INIT:
         st.write(
             "Willkommen zu unserem Text Adventure Game. Um das Spiel zu starten, wähle einen Geschichten start aus und klicke auf Start.")
-        st.write("Wir brauchen deinen OpenAI Api Key um die Geschichte zu starten. Wir behaletn den Key nur in der Session.")
+        st.write("Wir brauchen deinen OpenAI Api Key um die Geschichte zu starten. Wir behalten den Key nur in der Session.")
         open_ai_api_key = st.text_input("OpenAI API Key")
         open_ai_version = st.radio("OpenAI Version", ["gpt-3", "gpt-4"])
         if st.button("Start"):
