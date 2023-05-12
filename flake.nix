@@ -56,5 +56,19 @@
 
         default = ai-textadventure;
       };
+
+      devShells.default = let
+        pyenv = pkgs.python3.withPackages (ps:
+          with ps; [
+            self.packages.${system}.ai-textadventure
+            openai
+          ]);
+      in
+        pkgs.mkShell {
+          nativeBuildInputs = with pkgs; [
+            pyenv
+            streamlit
+          ];
+        };
     });
 }
