@@ -1,3 +1,4 @@
+from json import JSONDecodeError
 from typing import List
 from LLM.prompt import get_adventure_rules
 import streamlit as st
@@ -46,7 +47,10 @@ def extract_json(response_content: str) -> dict:
     if match:
         extracted_json = json.loads(match.group(1).strip())
     else:
-        extracted_json = json.loads(response_content)
+        try:
+            extracted_json = json.loads(response_content)
+        except JSONDecodeError:
+            extracted_json = {"story_part": response_content}
 
     print(f'extracted_json: {extracted_json}')
     return dict(extracted_json)
