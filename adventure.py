@@ -24,7 +24,7 @@ def clear_state():
     st.session_state.current_interaction = 0
     st.session_state.game_status = GamestatusEnum.INIT
     st.session_state.story_start = ""
-    st.session_state.language = "de"
+    st.session_state.language = "Deutsch"
 
 
 def display_story():
@@ -67,7 +67,7 @@ def main():
             change_game_state_to(GamestatusEnum.STARTED)
 
     if st.session_state.game_status == GamestatusEnum.STARTED:
-        if st.session_state.current_interaction < 9:
+        if st.session_state.current_interaction <= 9:
             display_story()
             st.divider()
             with st.form("Was passiert als nächstes und welche Entscheidungen stehen dem Protagonisten zur Verfügung?"):
