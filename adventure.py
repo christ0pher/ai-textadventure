@@ -1,7 +1,7 @@
 
 import streamlit as st
 
-from LLM.openAI import init_open_ai_config, continue_story, extract_story_interaction_json
+from LLM.openAI import init_open_ai_config, continue_story, extract_story_interaction_json, extract_json
 from game.constants import GamestatusEnum
 from game.game_state import change_game_state_to
 
@@ -28,8 +28,11 @@ def clear_state():
 
 
 def display_story():
-    for story_part in st.session_state.story[:-1]:
-        st.write(story_part["content"])
+    story_teller_responses = list(filter(lambda story_part: story_part["role"] == "assistant", st.session_state.story))
+    for story_part in story_teller_responses:
+        print(f'display: {story_part["content"]}')
+        story = extract_json(story_part["content"])
+        st.write(story["story_part"])
 
 def continue_story_with_prompt(prompt: str):
     st.session_state.story = continue_story(
