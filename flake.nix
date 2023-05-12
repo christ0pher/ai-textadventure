@@ -24,7 +24,7 @@
 
           propagatedBuildInputs = with pkgs.python3.pkgs; [
             setuptools
-            requests
+            openai
           ];
 
           meta = with nixpkgs.lib; {

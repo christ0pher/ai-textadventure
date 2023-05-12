@@ -1,7 +1,7 @@
 
 import streamlit as st
 
-from LLM.openAI import init_open_ai_config, call_openai_api
+from LLM.openAI import init_open_ai_config, continue_story
 from game.constants import GamestatusEnum
 from game.game_state import change_game_state_to
 
@@ -51,9 +51,11 @@ def main():
             st.session_state.game_started = True
             st.session_state.story_start = story_start
             st.session_state.story = [{"role": "user", "content": story_start}]
-            st.session_state.language = language
-            new_story_part = call_openai_api(st.session_state.story)
-            st.session_state.story.append(new_story_part)
+            if language:
+                st.session_state.language = language
+            else:
+                st.session_state.language = "de"
+            st.session_state.story = continue_story(st.session_state.story)
             change_game_state_to(GamestatusEnum.STARTED)
 
     if st.session_state.game_status == GamestatusEnum.STARTED:
@@ -66,9 +68,9 @@ def main():
                 submitted = st.form_submit_button("Weiter")
                 if submitted:
                     st.session_state.story.append(
-                        {"role": "user", "content": radio_selection})
-                    next_part = call_openai_api(st.session_state.story)
-                    st.session_state.story.append(next_part)
+                        {"role": "user", "content": radio_selection}
+                    )
+                    st.session_state.story = continue_story(st.session_state.story)
                     st.session_state.current_interaction += 1
                     st.experimental_rerun()
         else:

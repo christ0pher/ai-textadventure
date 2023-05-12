@@ -9,5 +9,5 @@ include = ["game", "LLM"]
 name = "ai-textadventure"
 version = "0.0.1"
 dependencies = [
-    "requests",
+    "openai"
 ]
